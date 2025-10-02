@@ -1,0 +1,597 @@
+# Sodium[Na] Interpreter
+# Developed by Eden Turner
+import math
+vtbe = 0
+tvars = -1
+parsd = []
+termChar = True
+termtyp = "x"
+ans = ""
+comType = ""
+runConsole = True
+multilin = False
+stored = "\n[STORING START]\n\n"
+session = "\n[SESSION START]\n"
+sessionIn = "\n[SESSION START]\n"
+sessionOut = "\n[SESSION START]\n"
+line = 0
+foundtc = False
+splitchar = " "
+vname = []
+vval = []
+comettyp = "//"
+
+
+while runConsole == True:
+
+    # Collecting user inputs & splitting string
+    uIn = input(">")
+    truth = uIn
+    
+    if len(vname) > 0:
+        for idx in range(len(vname)):
+            if vname[idx] in uIn:
+                uIn = uIn.replace(vname[idx], vval[idx])
+
+    parsd = uIn.split(splitchar)
+    trueparsd = truth.split(splitchar)
+    ranX = False
+
+    # i.add
+    if "i.add" in parsd:
+        intA = parsd[1]
+        intB = parsd[2]
+        ans = int(intA) + int(intB)
+        comType = "equation"
+        ranX = True
+
+    # fl.add
+    if "fl.add" in parsd:
+        flA = parsd[1]
+        flB = parsd[2]
+        ans = float(flA) + float(flB)
+        comType = "equation"
+        ranX = True
+
+    # i.sub
+    if parsd[0] == "i.sub":
+        intA = parsd[1]
+        intB = parsd[2]
+        ans = int(intA) - int(intB)
+        comType = "equation"
+        ranX = True
+
+    # fl.sub
+    if parsd[0] == "fl.sub":
+        flA = parsd[1]
+        flB = parsd[2]
+        ans = float(flA) - float(flB)
+        comType = "equation"
+        ranX = True
+
+    # i.mul
+    if parsd[0] == "i.mul":
+        intA = parsd[1]
+        intB = parsd[2]
+        ans = int(intA) * int(intB)
+        comType = "equation"
+        ranX = True
+
+    # fl.mul
+    if parsd[0] == "fl.mul":
+        flA = parsd[1]
+        flB = parsd[2]
+        ans = float(flA) * float(flB)
+        comType = "equation"
+        ranX = True
+
+    # i.div
+    if parsd[0] == "i.div":
+        intA = parsd[1]
+        intB = parsd[2]
+        ans = int(intA) / int(intB)
+        comType = "equation"
+        ranX = True
+
+    # i.div.floor
+    if parsd[0] == "i.div.floor":
+        intA = parsd[1]
+        intB = parsd[2]
+        ans = int(intA) // int(intB)
+        comType = "equation"
+        ranX = True
+
+    # fl.div
+    if parsd[0] == "fl.div":
+        flA = parsd[1]
+        flB = parsd[2]
+        ans = float(flA) / float(flB)
+        comType = "equation"
+        ranX = True
+
+    # fl.div.floor
+    if parsd[0] == "fl.div.floor":
+        flA = parsd[1]
+        flB = parsd[2]
+        ans = float(flA) // float(flB)
+        comType = "equation"
+        ranX = True
+
+    # i.mod
+    if parsd[0] == "i.mod":
+        intA = parsd[1]
+        intB = parsd[2]
+        ans = int(intA) % int(intB)
+        print(int(intA) % int(intB))
+        comType = "equation"
+        ranX = True
+
+    # fl.mod
+    if parsd[0] == "fl.mod":
+        flA = parsd[1]
+        flB = parsd[2]
+        ans = float(flA) % float(flB)
+        print(float(flA) % float(flB))
+        comType = "equation"
+        ranX = True
+
+    # i.exp
+    if parsd[0] == "i.exp":
+        intA = parsd[1]
+        intB = parsd[2]
+        ans = int(intA) ** int(intB)
+        comType = "equation"
+        ranX = True
+
+    # fl.exp
+    if parsd[0] == "fl.exp":
+        flA = parsd[1]
+        flB = parsd[2]
+        ans = float(flA) ** float(flB)
+        comType = "equation"
+        ranX = True
+
+    # i.equal
+    if parsd[0] == "i.equal":
+        intA = parsd[1]
+        intB = parsd[2]
+        subd = int(intA) - int(intB)
+        if subd == 0:
+            ans = "true"
+
+        else:
+            ans = "false"
+        comType = "logop"
+        ranX = True
+
+    # fl.equal
+    if parsd[0] == "fl.equal":
+        flA = parsd[1]
+        flB = parsd[2]
+        subd = float(flA) - float(flB)
+        if subd == 0:
+            ans = "true"
+
+        else:
+            ans = "false"
+        comType = "logop"
+        ranX = True
+
+    # !i.equal
+    if parsd[0] == "!i.equal":
+        intA = parsd[1]
+        intB = parsd[2]
+        subd = int(intA) - int(intB)
+        if subd != 0:
+            ans = "true"
+
+        else:
+            ans = "false"
+        comType = "logop"
+        ranX = True
+
+    # !fl.equal
+    if parsd[0] == "!fl.equal":
+        flA = parsd[1]
+        flB = parsd[2]
+        subd = float(flA) - float(flB)
+        if subd != 0:
+            ans = "true"
+
+        else:
+            ans = "false"
+        comType = "logop"
+        ranX = True
+
+    # i.more
+    if parsd[0] == "i.more":
+        intA = parsd[1]
+        intB = parsd[2]
+        if int(intA) > int(intB):
+            ans = "true"
+
+        else:
+            ans = "false"
+
+        comType = "logop"
+        ranX = True
+
+    # i.less
+    if parsd[0] == "i.less":
+        intA = parsd[1]
+        intB = parsd[2]
+        if int(intA) < int(intB):
+            ans = "true"
+
+        else:
+            ans = "false"
+
+        comType = "logop"
+        ranX = True
+
+    # fl.more
+    if parsd[0] == "fl.more":
+        flA = parsd[1]
+        flB = parsd[2]
+        if float(flA) > float(flB):
+            ans = "true"
+
+        else:
+            ans = "false"
+
+        comType = "logop"
+        ranX = True
+
+    # fl.less
+    if parsd[0] == "fl.less":
+        flA = parsd[1]
+        flB = parsd[2]
+        if float(flA) < float(flB):
+            ans = "true"
+
+
+        else:
+            ans = "false"
+   
+
+        comType = "logop"
+        ranX = True
+
+    # i.factorial
+    if parsd[0] == "i.factorial":
+        ans = math.factorial(int(parsd[1]))
+
+        comType = "eq1"
+        ranX = True
+        
+    # fl.factorial
+    if parsd[0] == "fl.factorial":
+        ans = math.factorial(float(parsd[1]))
+
+        comType = "eq1"
+        ranX = True
+
+    # s.echo
+    if parsd[0] == "s.echo":
+        ststr = len(parsd[0])
+        ans = uIn[ststr:]
+        comType = "string"
+        ranX = True
+
+    # s.echo.session
+    if parsd[0] == "s.echo.session":
+        print(session)
+        print("[CURRENT]\n")
+        comType = "system"
+        ranX = True
+
+    # s.echo.ins
+    if parsd[0] == "s.echo.ins":
+        print(sessionIn)
+        print("[CURRENT]\n")
+        comType = "system"
+        ranX = True
+
+    #s.echo.outs
+    if parsd[0] == "s.echo.outs":
+        print(sessionOut)
+        print("[CURRENT]\n")
+        comType = "system"
+        ranX = True
+
+    # s.echo.line
+    if parsd[0] == "s.echo.line":
+        ans = "Line: " + str(line)
+        comType = "system"
+        ranX = True
+
+    # s.forceform.u
+    if parsd[0] == "s.forceform.u":
+        startstr = len(parsd[0])
+        ans = uIn[startstr:].upper()
+        comType = "string"
+        ranX = True
+
+    # s.forceform.l
+    if parsd[0] == "s.forceform.l":
+        startstr = len(parsd[0])
+        ans = uIn[startstr:].lower()
+        comType = "string"
+        ranX = True
+
+    # s.forceform.t
+    if parsd[0] == "s.forceform.t":
+        startstr = len(parsd[0])
+        ans = uIn[startstr:].title()
+        comType = "string"
+        ranX = True
+
+    # var.cree
+    if parsd[0] == "var.cree":
+        vname.append(parsd[1])
+        vval.append(parsd[2])
+        tvars += 1
+        ans = f'variable created at index {tvars}'
+        comType = "sys3"
+        ranX = True
+
+    # var.rw
+    if parsd[0] == "var.rw":
+        vtbe = vname.index(trueparsd[1])
+        vval[vtbe] = parsd[2]
+        ans = f'variable rewritten at index {vtbe}'
+        comType = "sys3"
+        ranX = True
+
+    # var.del
+    if parsd[0] == "var.del":
+        vtbe = vname.index(trueparsd[1])
+        vname[vtbe] = ""
+        vval[vtbe] = ""
+        ans = f'deleted variable at index {vtbe}'
+        comType = "sys2"
+        ranX = True
+
+    # var.clear
+    if parsd[0] == "var.clear":
+        for idx in range(len(vname)):
+            vname[idx] = ""
+            vval[idx] = ""
+        ans = f'variables cleared from index 0 to index {len(vname)}'
+        
+
+    # comment
+    if comettyp in uIn:
+        comType = "special"
+        ranX = True
+
+    # help/help.me
+    if parsd[0] == "help" or parsd[0] == "help.me":
+        ans = """         -***-
+        {HELP}
+
+        [commands]
+        (mathematical operations)
+        i.add - adds two integers
+        fl.add - adds two floats
+        i.sub - subtracts two integers
+        fl.sub - subtracts two floats
+        i.mul - multiplies two integers
+        fl.mul - multiplies two floats
+        i.div - divides two integers
+        i.div.floor - divides two integers without remainders
+        fl.div - divides two floats
+        fl.div.floor - divides two floats without remainders
+        i.mod - finds the remainder of two integers
+        fl.mod - finds the remainder of two floats
+        i.exp - raises intA to the power of intB
+        fl.exp - raises floatA to the power of floatB
+        i.equal - checks if two integers are equal
+        !i.equal - checks if two integers are different
+        fl. equal - checks if two floats are equal
+        !fl.equal - checks if two floats are different
+        i.more - checks if intA is greater than intB
+        i.less - checks if intA is less than intB
+        fl.more - checks if floatA is greater than floatB
+        fl.less - checks if floatA is less than floatB
+        i.factorial - calculates the factorial of an int
+        fl.factorial - calculates the factorial of a float
+
+        (text operations)
+        s.echo - prints a string
+        s.forceform.u - reprints the inputted string as all upper case
+        s.forceform.l - reprints the inputted string as all lower case
+        s.forceform.t - reprints the inputted string as title case
+
+        (system comands)
+        re - reprints the previous answer
+        re.i - reprints previous answer as int
+        re.fl - reprints previous answer as float
+        re.bl - reprints previous answer as bool
+        re.s - reprints previous answer as string
+        help {or} help.me - prints help menu (this screen)
+        creds - prints version info and credits
+        xxx - ends session
+
+        -***-
+
+        """
+        comType = "system"
+        ranX = True
+
+    # creds
+    if parsd[0] == "creds":
+        ans = """     Sodium[Na] for CPython/CoBALT
+     b.001
+     Li developed by Eden Turner
+     CoBALT developed by dodadeda studios
+     -*****-"""
+
+        comType = "system"   
+        ranX = True
+
+    # re
+    if parsd[0] == "re":
+        ans = ans
+        comType = "system"
+        ranX = True
+
+    # re.i
+    if parsd[0] == "re.i":
+        ans = int(ans)
+        comType = "system"
+        ranX = True
+
+    # re.fl
+    if parsd[0] == "re.fl":
+        ans = float(ans)
+        comType = "system"
+        ranX = True
+
+    # re.bl
+    if parsd[0] == "re.bl":
+        ans = bool(ans)
+        comType = "system"
+        ranX = True
+
+    # re.s
+    if parsd[0] == "re.s":
+        ans = str(ans)
+        comType = "system"
+        ranX = True
+
+    # re.types
+    if parsd[0] == "re.types":
+        ans = str(comType)
+        comType = "system"
+        ranX = True
+
+    # termchar halt
+    if parsd[0] == "termchar":
+        if parsd[1] == "halt":
+            termChar = False
+            foundtc = True
+            ans = "termchars halted"
+            comType = "sys2"
+            ranX = True
+
+    # termchar start
+    if parsd[0] == "termchar":
+        if parsd[1] == "start":
+            termChar = True
+            ans = "termchars started"
+            comType = "sys2"
+            ranX = True
+
+    # system
+    if parsd[0] == "system":
+        # splits
+        if parsd[1] == "splits":
+            splitchar = parsd[2]
+
+        # terms
+        if parsd[1] == "terms":
+            termtyp = parsd[2]
+
+        # comments
+        if parsd[1] == "comment":
+            comettyp = parsd[2]
+
+        comType = "special"
+        ranX = True
+
+
+    # xxx
+    if parsd[0] == "xxx":
+        runConsole = False
+        comType = "special"
+        ranX = True
+
+    # blank input
+    if uIn == "":
+        ans = ""
+        compType = "special"
+        ranX = True
+
+    # terminators
+    if termChar == True:
+        if comType == "string":
+            foundtc = True
+
+        if comType == "special":
+            pass
+        
+        elif comType == "equation":
+            if parsd[3] == termtyp:
+                foundtc = True
+
+        elif comType == "eq1":
+            if parsd[2] == termtyp:
+                foundtc = True
+
+        elif comType == "logop":
+            if parsd[3] == termtyp:
+                foundtc = True
+
+        elif comType == "system":
+            if parsd[1] == termtyp:
+                foundtc = True
+
+        elif comType == "sys2":
+            if parsd[2] == termtyp:
+                foundtc = True
+
+        elif comType == "sys3":
+            if parsd[3] == termtyp:
+                foundtc = True
+
+        if termChar == False:
+            foundtc = True
+
+    # storing
+    if multilin == True:
+        stored += str(ans).strip() + "\n"
+
+    if multilin == False and foundtc == True and uIn != "store" or "":
+        print(str(ans).strip())
+
+    if parsd[0] == "xx":
+        print(stored)
+        print("[STORING ENDED]\n")
+        stored = ""
+        ans = "storing ended"
+        multilin = False
+        comType = "special"
+        ranX = True
+
+    if parsd[0] == "store":
+        multilin = True
+        ans = "storing"
+        comType = "system"
+        ranX = True
+
+
+    # error message
+    if ranX == False:
+        print("ERROR: input not recognised, please try again.")
+        print("***")
+        uIn = ""
+
+    # logging
+    ans = str(ans).strip()
+    uIn = str(uIn).strip()
+    line += 1
+    session += f">>{str(uIn)} \n{str(ans)}\n"
+    sessionIn += f">>{str(uIn)} \n"
+    sessionOut += f"{str(ans)} \n"
+
+    # reset variables
+    uIn = ""
+
+
+
+
+print("*****-session ended-*****")
+
+
+
